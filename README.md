@@ -418,9 +418,60 @@ artcles.html을 jinja2문법을 사용하여 for문으로 작성
 {% endblock %}
 ```
 
+다음과 같은 결과물을 확인할 수 있다.
+
+
+
+![image-20210420085417128](https://user-images.githubusercontent.com/25717861/115317272-19913a80-a1b6-11eb-94cc-b8ed96ea2512.png)
 
 
 
 
 
+각 테이블에 있는 title을 클릭시 상세 내용이 나오도록 하여본다.
+
+http://localhost:5000/article/id 의 경로로 요청이 들어 왔을때 
+
+id부분을 params로 활용하여 각 id 번호에 해당하는 내용을 가져와서 보여준다.
+
+app.py에 다음과 같은 코드를 추가한다.
+
+```python
+...
+@app.route('/article/<int:id>')
+def article(id):
+  articles = Articles()
+  article = articles[id-1]
+  print(articles[id-1])
+  return render_template("article.html" , article = article)
+...
+```
+
+
+
+article.html 파일을 생성후 다음과 같은 코드를 추가한다.
+
+```html
+{% extends "layouts.html" %}
+{% block body %}
+ 
+<div class="card">
+  <div class="card-header">
+      {{ article['author'] }}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">{{ article['title'] }}</h5>
+    <p class="card-text">{{ article['body'] }}</p>
+    <a href="/" class="btn btn-primary">Home</a>
+  </div>
+</div>
+
+{% endblock %}
+```
+
+
+
+다음과 같은 결과물이 만들어 진다.
+
+![image-20210420090350486](https://user-images.githubusercontent.com/25717861/115317805-5a3d8380-a1b7-11eb-8a37-d566b7fe4d62.png)
 
